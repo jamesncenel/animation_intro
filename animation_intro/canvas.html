@@ -1,0 +1,130 @@
+<!-- James Lord Ender Laing -->
+<!-- Extra credit I added was music in the background -->
+<!DOCTYPE html>
+<html>
+<head>
+
+<TITLE>Dancing Figure</TITLE> 
+
+
+<style type="text/css">
+
+canvas { background: white; }
+
+body {
+	font: 100%/1.4 Verdana, Arial, Helvetica, sans-serif;
+	background-color:#FFF;
+	margin: 0;
+	padding: 0;
+	color: #000;
+}
+	
+/* ~~ this fixed width container surrounds all other elements ~~ */
+.container {
+	width: 960px;
+	background-color: #FFF;
+	margin: 0 auto; /* the auto value on the sides, coupled with the width, centers the layout */
+}
+
+h1, h2, h3, h4, h5, h6, p {
+	margin-top: 0;	 /* removing the top margin gets around an issue where margins can escape from their containing div. The remaining bottom margin will hold it away from any elements that follow. */
+	padding-right: 0px;
+	padding-left: 0px; /* adding the padding to the sides of the elements within the divs, instead of the divs themselves, gets rid of any box model math. A nested div with side padding can also be used as an alternate method. */
+	margin-bottom: 2px; padding-bottom: 0;
+}
+ 
+
+</style>
+
+</head>
+     
+
+
+
+<script type="text/javascript" src="../Common/webgl-utils.js"></script>
+<script type="text/javascript" src="../Common/initShaders.js"></script>
+<script type="text/javascript" src="../Common/MV.js"></script>
+<script type="text/javascript" src="setup.js"></script> 
+<!-- <script type="text/javascript" src="LordEnderLaing_geometry.js"></script>  -->
+
+<!-- **************************************************************** -->
+<!-- ***************  SHADERS  ************************************************* -->
+
+
+ 
+
+<!-- Vertex shader 1: lighting calculations -->
+<!-- Lighting calculations are done in eye coordinates  -->
+
+<script id="vertex-shader" type="x-shader/x-vertex">
+
+    attribute  vec4 vPosition;
+    
+    uniform mat4 modelViewMatrix;
+    uniform mat4 projectionMatrix;
+    uniform vec4 color;
+    attribute vec2 vTexCoord;
+    
+    varying vec4 fcolor;
+    varying vec2 fTexCoord;
+    
+    void main() 
+    {
+        fcolor = color;
+        fTexCoord = vTexCoord;
+        gl_Position = projectionMatrix * modelViewMatrix * vPosition;
+    } 
+    </script>
+    
+    <script id="fragment-shader" type="x-shader/x-fragment">
+    
+    precision mediump float;
+    varying vec4 fcolor;
+    varying  vec2 fTexCoord;
+
+    uniform sampler2D Tex0;
+    uniform sampler2D Tex1;
+    
+    void main()
+    {
+        /*gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0); */
+        /*gl_FragColor = fcolor;*/
+
+        gl_FragColor = fcolor*(texture2D(Tex1, fTexCoord));
+    
+    }
+    </script>
+
+<!-- *********  END SHADERS  ******************************************************* -->
+<!-- **************************************************************** -->
+ 
+
+
+<body>
+    <div style="font-family:verdana";>
+        <h1> Dancing Figure </h1>
+        
+        <strong>Author: </strong>James Lord Ender Laing
+        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp        
+        
+        <!-- </br>
+        <strong>Description: </strong>This program shows two different objects rendered on screen using a triangulation data structure for the vertices and faces and phong illumination. This program also allows users to alter aspects about the object they are viewing. They can change the material the object is made of, the light position, the light color, the field of view, and the shininess of the object.</br>
+        </br> -->
+        </br>
+        <strong></strong>
+        </br>
+        </div>
+        <!-- buttons -->
+        <canvas id="gl-canvas" width="512" height="512" style="color:  #000000;">
+        </canvas>
+        <br />
+        Fitting Music:
+        <br />
+        <audio controls loop id="backMusic">
+                <source src="./LordEnderLaingBackgroundMusic.mp3" type="audio/mpeg">
+                    You will see this text if native audio playback is not supported.
+            </audio> 
+        
+        
+</body>
+</html>
